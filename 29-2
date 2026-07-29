@@ -1,0 +1,40 @@
+from collections import Counter
+
+corpus = [
+    "I like NLP",
+    "I study NLP",
+    "I love Python"
+]
+
+words = []
+bigrams = []
+
+for sentence in corpus:
+    w = sentence.split()
+    words.extend(w)
+    for i in range(len(w) - 1):
+        bigrams.append((w[i], w[i + 1]))
+
+unigram = Counter(words)
+bigram = Counter(bigrams)
+
+vocab = len(unigram)
+
+print("Vocabulary Size =", vocab)
+print()
+
+for bg in bigram:
+    w1, w2 = bg
+    count = bigram[bg]
+
+    # MLE Probability
+    mle = count / unigram[w1]
+
+    # Laplace Smoothing
+    laplace = (count + 1) / (unigram[w1] + vocab)
+
+    print("Bigram =", bg)
+    print("Count =", count)
+    print("MLE =", round(mle, 3))
+    print("Laplace =", round(laplace, 3))
+    print()
