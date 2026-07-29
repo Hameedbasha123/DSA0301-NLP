@@ -1,0 +1,45 @@
+from collections import Counter
+
+corpus = [
+    "I like NLP",
+    "I study NLP",
+    "I love Python"
+]
+
+words = []
+bigrams = []
+
+for sentence in corpus:
+    w = sentence.split()
+    words.extend(w)
+    for i in range(len(w) - 1):
+        bigrams.append((w[i], w[i + 1]))
+
+unigram = Counter(words)
+bigram = Counter(bigrams)
+
+total_words = len(words)
+
+print("Simple Backoff Language Model\n")
+
+test_bigrams = [
+    ("I", "like"),
+    ("study", "Python"),
+    ("love", "Python")
+]
+
+for bg in test_bigrams:
+    w1, w2 = bg
+
+    if bigram[bg] > 0:
+        prob = bigram[bg] / unigram[w1]
+        print(bg)
+        print("Bigram Found")
+        print("Probability =", round(prob, 3))
+    else:
+        prob = unigram[w2] / total_words
+        print(bg)
+        print("Bigram Not Found -> Backoff to Unigram")
+        print("Probability =", round(prob, 3))
+
+    print()
